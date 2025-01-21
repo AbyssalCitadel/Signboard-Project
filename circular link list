@@ -1,0 +1,122 @@
+# circular linked list
+class Slide:
+    # this is a class for a single slide
+    def __init__(self, slide_number):
+        # this is where the slide number is stored
+        self.slide_number = slide_number
+        # points to the next slide in the cycle
+        self.next = None
+
+
+class CircularLinkedList:
+    # this class is for the slides that loop around
+    def __init__(self):
+        # the first slide in the list
+        self.head = None
+
+    def add_slide(self, slide_number):
+        # adds a new slide to the list
+        new_slide = Slide(slide_number)
+
+        # if the list is empty
+        if self.head is None:
+            self.head = new_slide  # make it the first slide
+            new_slide.next = self.head  # loop it back to itself
+        else:
+            # finds the last slide
+            current = self.head
+            while current.next != self.head:
+                current = current.next
+
+            # connects the last slide to the new one
+            current.next = new_slide
+            # makes the new slide point back to the first slide
+            new_slide.next = self.head
+
+    def display_slides(self, cycles=1):
+        # prints all the slides in the list for a set number of cycles
+
+        # if theres no slides just print a message
+        if self.head is None:
+            print("no slides to show")
+            return
+
+        # starts with the first slide
+        current = self.head
+        count = 0  # keeps track of how many slides were shown
+
+        print("\nHere are the slides:")
+        while count < cycles * self.size():  # go's through slides the amount of times we want
+            print(f"Slide {current.slide_number}")  # print the slide number
+            current = current.next  # move to the next slide
+            count += 1  # increase the count
+
+    def size(self):
+        # counts the slides in the list
+
+        # if theres no slides return 0
+        if self.head is None:
+            return 0
+
+        # start counting from 1
+        count = 1
+        current = self.head
+
+        # loop until we get back to the first slide
+        while current.next != self.head:
+            current = current.next
+            count += 1
+
+        # return how many slides there are
+        return count
+
+    def simulate_cycling(self, display_time, view_time):
+        # simulates what slides a student sees
+
+        # if theres no slides we cant do anything
+        if self.head is None:
+            print("no slides to simulate!")
+            return []
+
+        # this list will keep track of the slides they saw
+        slides_seen = []
+
+        # starts at the first slide
+        current = self.head
+        time_remaining = view_time  # how much time the student has to watch
+
+        print("\nSimulating slide viewing:")
+        while time_remaining > 0:  # keeps going as long as they have time
+            # adds the current slide to the list
+            slides_seen.append(current.slide_number)
+
+            # prints what slide they're seeing
+            print(f"Viewing Slide {current.slide_number} (time left: {time_remaining}s)")
+
+            # moves to the next slide
+            current = current.next
+
+            # subtracts the time it took to see this slide
+            time_remaining -= display_time
+
+        # return the slides they saw
+        return slides_seen
+
+
+# runs the code to make sure it works
+if __name__ == "__main__":
+    # makes the circular linked list
+    cll = CircularLinkedList()
+
+    # adds 20 slides
+    for i in range(1, 21):
+        cll.add_slide(i)
+
+    # displays the slides for 2 cycles
+    cll.display_slides(cycles=2)
+
+    # simulates a student watching slides for 60 seconds with 20 sec per slide
+    slides_seen = cll.simulate_cycling(display_time=20, view_time=60)
+
+    # prints what slides the student saw
+    print("\nSlides Seen by the Student:", slides_seen)
