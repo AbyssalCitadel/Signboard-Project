@@ -1,5 +1,5 @@
 from random import randrange
-from datetime import datetime, timedelta
+from datetime import timedelta
 import numpy as np
 # Imports the random number gen
 # do all calculations in seconds from midnight,

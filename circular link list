@@ -70,7 +70,7 @@ class CircularLinkedList:
         # return how many slides there are
         return count
 
-    def simulate_cycling(self, display_time, view_time):
+    def simulate_cycling(self, display_time, view_time, last_slide_seen):
         # simulates what slides a student sees
 
         # if theres no slides we cant do anything
@@ -83,6 +83,8 @@ class CircularLinkedList:
 
         # starts at the first slide
         current = self.head
+        for x in range(last_slide_seen):
+            current = current.next
         time_remaining = view_time  # how much time the student has to watch
 
         print("\nSimulating slide viewing:")
@@ -102,21 +104,3 @@ class CircularLinkedList:
         # return the slides they saw
         return slides_seen
 
-
-# runs the code to make sure it works
-if __name__ == "__main__":
-    # makes the circular linked list
-    cll = CircularLinkedList()
-
-    # adds 20 slides
-    for i in range(1, 21):
-        cll.add_slide(i)
-
-    # displays the slides for 2 cycles
-    cll.display_slides(cycles=2)
-
-    # simulates a student watching slides for 60 seconds with 20 sec per slide
-    slides_seen = cll.simulate_cycling(display_time=20, view_time=60)
-
-    # prints what slides the student saw
-    print("\nSlides Seen by the Student:", slides_seen)
