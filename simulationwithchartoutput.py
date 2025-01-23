@@ -45,18 +45,25 @@ for d in range(number_of_days):
         departure_seconds_into_loop = (departure_time - slide_zero_time) % seconds_per_loop
         # which slide was the last on ethe student saw
         departure_slide_number = int(departure_seconds_into_loop // seconds_per_slide)
-        # if the loop did not reach the final slides and reset back to zero
-        if departure_slide_number >= arrival_slide_number:
-            # from the first slide seen to the last slide seen
-            for n in range(arrival_slide_number, departure_slide_number + 1):
+        # if normal case student time in drivevway (60s) is shorter than time to loop all slides (400s)
+        if (seconds_viewing < seconds_per_loop):
+            # if the loop did not reach the final slides and reset back to zero
+            if departure_slide_number >= arrival_slide_number:
+                # from the first slide seen to the last slide seen
+                for n in range(arrival_slide_number, departure_slide_number + 1):
+                    # add one to the index of each slide seen by that student
+                    students_seen_slides_counters[s][n] += 1
+            # if the loop reached the end and the slides reset
+            else:
                 # add one to the index of each slide seen by that student
-                students_seen_slides_counters[s][n] += 1
-        # if the loop reached the end and the slides reset
+                for n in range(arrival_slide_number, number_of_slides):
+                    students_seen_slides_counters[s][n] += 1
+                for n in range(0, departure_slide_number + 1):
+                    students_seen_slides_counters[s][n] += 1
+        # else unusual case student time in drivevway is longer than time to loop all slides
         else:
-            # add one to the index of each slide seen by that student
-            for n in range(arrival_slide_number, number_of_slides):
-                students_seen_slides_counters[s][n] += 1
-            for n in range(0, departure_slide_number + 1):
+            # add one to the index of each slide
+            for n in range(number_of_slides):
                 students_seen_slides_counters[s][n] += 1
     # creates a list of the slides the student have seen
     slides_per_student = list(map(lambda slides_for_student: len(slides_for_student) - slides_for_student.count(0), students_seen_slides_counters))
