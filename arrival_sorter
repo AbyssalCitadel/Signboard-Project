@@ -1,0 +1,27 @@
+#sorting algorithm!!
+from Student_Q import queue_of_students
+
+sorted_list = []
+
+for x in queue_of_students.students: 
+
+    # upper found checks if the algorithm found a another entry with a arrival_time higher than the selected entry's
+    upper_found = False
+
+    selected_position = 0
+    while upper_found == False:
+        # If the selected position reaches the end of the list, just put the current student at the end of the list (Prevents crash)
+        if selected_position == len(sorted_list):
+            sorted_list.insert(selected_position, x)
+        else:
+            if x.arrival_time > sorted_list[selected_position].arrival_time:
+                selected_position = selected_position + 1
+            else:
+                sorted_list.insert(selected_position, x)
+                upper_found = True
+
+for x in sorted_list:
+    print (x.arrival_time)
+queue_of_students.students = sorted_list
+
+
