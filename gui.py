@@ -5,7 +5,7 @@ window = tk.Tk()
 window.title('')
 window.geometry('600x300')
 
-def search():
+def submit():
     '''create a search button'''
     search_entry = search_box.get()
     slides_entry = slides_box.get()
@@ -31,7 +31,7 @@ label = tk.Label(text="Exposure To Signboard")
 label.grid(column = 0, row = 0)
 
 # search option
-search_label = tk.Label(window, text="Search")
+search_label = tk.Label(window, text="Number of Students")
 # placing the label
 search_label.grid(column = 0, row = 3)
 
@@ -41,7 +41,7 @@ search_box = tk.Entry(window, width = 20)
 search_box.grid(column = 1, row = 3)
 
 # number of slides label
-slides_label = tk.Label(window, text="Number of slides")
+slides_label = tk.Label(window, text="Number of Slides")
 slides_label.grid(column = 0, row = 4)
 
 # text box
@@ -64,7 +64,7 @@ result_box = tk.Label(window, text="")
 result_box.grid(column = 7, row = 5)
 
 # search button
-search_button= tk.Button(window, text='Search', command = search)
+search_button= tk.Button(window, text='Submit', command = submit)
 # placing the button
 search_button.grid(column = 5, row =5)
 
