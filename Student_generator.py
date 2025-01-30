@@ -27,7 +27,7 @@ queue_of_students = QueueOfStudents()
 
 # Generates the students.  
 for x in range(300):
-    example_student = Student(randrange(8 * 3600, 18 * 3600), round(np.random.normal(60,5)), randrange(1, 6))
+    example_student = Student(randrange(21600, 79200), round(np.random.normal(60,5)), randrange(1, 6))
     queue_of_students.add_student(example_student)
 
 # print the student information
