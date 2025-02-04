@@ -1,0 +1,48 @@
+from arrival_sorter import queue_of_students
+from circle_linked_list  import CircularLinkedList
+import time 
+
+# this runs the time simulation for students arriving and watching slides
+def run_time_simulation(cll, queue_of_students):
+    
+    # starts at the first students arrival time
+    current_time = min(student.arrival_time for student in queue_of_students.students)
+    
+    # last slide seen starts at 1
+    last_slide_seen = 1  
+
+    slide_display_time = 20
+
+    print("\nStarting Time-Based Simulation:\n")
+    
+    for student in queue_of_students.students:
+        # checks how long until the next student arrives
+        time_until_next_student = student.arrival_time - current_time
+        
+        # if time passed, move time forward
+        if time_until_next_student > 0:
+            print(f"Advancing time by {time_until_next_student} seconds to {student.hms()}")
+            slides_not_seen = cll.simulate_cycling(display_time=slide_display_time, view_time=time_until_next_student, last_slide_seen=last_slide_seen)
+            print(f"Slides not seen: {slides_not_seen}\n")
+            time.sleep(0.1)  # just a short delay to make it readable
+            current_time = student.arrival_time
+        
+        # run the slide simulation for this student
+        slides_seen = cll.simulate_cycling(display_time=slide_display_time, view_time=student.expose_time, last_slide_seen=last_slide_seen)
+        print(f"Student at {student.hms()} saw slides: {slides_seen}\n")
+        
+        # updates last slide seen so the next student continues from there
+        if slides_seen:
+            last_slide_seen = slides_seen[-1]  
+
+if __name__ == "__main__":
+     # makes the circular linked list
+    cll = CircularLinkedList()
+    
+    # adds 20 slides
+    for i in range(1, 21):
+        cll.add_slide(i)
+    
+    # runs the time simulation
+    run_time_simulation(cll, queue_of_students)
+   
