@@ -7,7 +7,6 @@ class Slide:
         # points to the next slide in the cycle
         self.next = None
 
-
 class CircularLinkedList:
     # this class is for the slides that loop around
     def __init__(self):
@@ -45,9 +44,7 @@ class CircularLinkedList:
         current = self.head
         count = 0  # keeps track of how many slides were shown
 
-        print("\nHere are the slides:")
         while count < cycles * self.size():  # go's through slides the amount of times we want
-            print(f"Slide {current.slide_number}")  # print the slide number
             current = current.next  # move to the next slide
             count += 1  # increase the count
 
@@ -87,13 +84,10 @@ class CircularLinkedList:
             current = current.next
         time_remaining = view_time  # how much time the student has to watch
 
-        print("\nSimulating slide viewing:")
+        
         while time_remaining > 0:  # keeps going as long as they have time
             # adds the current slide to the list
             slides_seen.append(current.slide_number)
-
-            # prints what slide they're seeing
-            print(f"Viewing Slide {current.slide_number} (time left: {time_remaining}s)")
 
             # moves to the next slide
             current = current.next
@@ -103,4 +97,3 @@ class CircularLinkedList:
 
         # return the slides they saw
         return slides_seen
-
