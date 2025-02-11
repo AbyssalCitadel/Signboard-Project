@@ -1,10 +1,9 @@
 """Gui module"""
-
 import tkinter as tk
 import tkinter.font as tkFont
 from PIL import Image, ImageTk
-import os
-
+import os 
+from full_simulator import full_simulation
 
 #Creating the GUI window 
 window = tk.Tk()
@@ -13,23 +12,20 @@ window.title('')
 window.geometry('1000x753')
 
 window.title('Signboard Project')  # Adding a title
-window.geometry('600x600')
-window.configure(bg="#9E4244")  #MakeitPINK-This is the color of watermelon
-
 
 def search():
    #create a search button
-    search_entry = search_box.get()
-    slides_entry = slides_box.get()
-    seconds_entry = seconds_box.get()
-
-    if search_box:
-        display_text = ""
-        display_text += f'{search_entry},\n'
-        display_text += f'{slides_entry},\n'
-        display_text += f'{seconds_entry}.'
-        result_box.config(text=(display_text))
-
+    if int(seconds_box.get()) == 0 or int(search_box.get()) == 0 or int(slides_box.get()) == 0:
+        result_box.config(text=(f"Please have all your inputs above 0"))
+    else:
+        times_slides_were_seen = full_simulation(int(seconds_box.get()), int(search_box.get()), int(slides_box.get()))
+    # math for finding the average amount slides were seen
+        slide_count = 0
+        for x in times_slides_were_seen:
+            slide_count = slide_count + x
+            slide_count = slide_count // len(times_slides_were_seen)
+        # I tried to split the output text, but it hates me D:
+        result_box.config(text=(f"The most times a slide was seen was {min(times_slides_were_seen)}, at slide {times_slides_were_seen.index(min(times_slides_were_seen))} \n The least times a slide was seen was {max(times_slides_were_seen)}, at slide {times_slides_were_seen.index(max(times_slides_were_seen))} \n On average, a given slide was seen {slide_count} times"))
 
 # adding a background image
 '''creating a path to the image'''
@@ -44,8 +40,10 @@ image_label.place(relx=.5, rely=.5, anchor='center')
 
 # make the label look better
 title_font = tkFont.Font(family="Georgia", size = 16, weight = "bold")
+
 # creating a label
 label = tk.Label(text="Exposure To Signboard", font = title_font)
+
 # placing the label
 label.place(relx=.5, rely=.3, anchor='center')
 
@@ -54,6 +52,7 @@ labels_font = tkFont.Font(family="Poor Richard", size = 12, weight=tkFont.NORMAL
 
 # search option
 search_label = tk.Label(window, text="Number of Students", font = labels_font)
+
 # placing the label
 search_label.place(relx=.25, rely=.35, anchor='w')
 
@@ -61,6 +60,7 @@ search_label.place(relx=.25, rely=.35, anchor='w')
 search_box = tk.Entry(window, width = 20)
 # placing the text box
 search_box.place(relx=.45, rely=.35, anchor='center')
+search_box.insert(-1, "0")
 
 # number of slides label
 slides_label = tk.Label(window, text="Number of Slides", font = labels_font)
@@ -70,13 +70,13 @@ slides_label.place(relx=.25, rely=.40, anchor='w')
 slides_box = tk.Entry(window, width = 20)
 # placing the text box
 slides_box.place(relx=.45, rely=.40, anchor='center')
-
+slides_box.insert(-1, "0")
 # seconds persilde
 seconds_label = tk.Label(window, text="Seconds Perslide", font = labels_font)
 seconds_label.place(relx=.25, rely=.45, anchor='w')
-
 # text box
 seconds_box = tk.Entry(window, width = 20)
+seconds_box.insert(-1, "0")
 # placing the text box
 seconds_box.place(relx=.45, rely=.45, anchor='center')
 
@@ -84,72 +84,22 @@ seconds_box.place(relx=.45, rely=.45, anchor='center')
 signboard_frame = tk.Frame(window, bg="#F0EDE5", bd=5, relief="ridge")  
 signboard_frame.grid(column=0, row=0, columnspan=3, padx=10, pady=10, sticky="ew")
 
-#label inside the signboard frame
-signboard_label = tk.Label(signboard_frame, text="<3", 
-                           font=("Arial", 14, "bold"), bg="#8b7d6b", fg="white")
-signboard_label.pack(pady=5)
-
-#label itself
-label = tk.Label(text="EXPOSE THE PEOPLE TO THE GLOWING SIGN")
-# Placing the label
-label.grid(column=0, row=0)
-
-#Search
-search_label = tk.Label(window, text="Search")
-search_label.grid(column=0, row=3)
-
-#Text
-search_box = tk.Entry(window, width=20)
-search_box.grid(column=1, row=3)
-
-#Number of slide lable
-slides_label = tk.Label(window, text="Number of slides")
-slides_label.grid(column=0, row=4)
-
-#Text box
-slides_box = tk.Entry(window, width=20)
-slides_box.grid(column=1, row=4)
-
-#Seconds per slide
-seconds_label = tk.Label(window, text="Seconds Per Slide")
-seconds_label.grid(column=0, row=5)
-
-#Text box
-seconds_box = tk.Entry(window, width=20)
-seconds_box.grid(column=1, row=5)
-
-
 #Result box in GUI
 result_box = tk.Label(window, text="")
 
-# placing result area
-result_box.place(relx=.55, rely=.4, anchor='center')
-
 # search button
-search_button= tk.Button(window, text='Submit', command = submit, font = labels_font,)
+search_button= tk.Button(window, text='Submit', command = search, font = labels_font,)
 # placing the button
 search_button.place(relx=.5, rely=.5, anchor='center')
 
-result_box.grid(column=7, row=5)
+result_box.place(relx = 0.5,  rely = 0.57, anchor = 'center')
 
-#Search button
-search_button = tk.Button(window, text='Search', command=search)
-search_button.grid(column=5, row=5)
 
 #Styling the existing labels
 label_style = {"font": ("Arial", 11), "bg": "#d9d9d9", "padx": 5, "pady": 2}
 
-search_label.config(**label_style)
-slides_label.config(**label_style)
-seconds_label.config(**label_style)
-
 #Adding a border and styling for the result box
-result_box.config(font=("Arial", 11), fg="black", bg="white", width=30, height=2, bd=2, relief="sunken")
-
-#Adding a border and some padding for the text entry boxes
-search_box.config(bg="white", fg="black", font=("Arial", 10), bd=2, relief="solid")
-slides_box.config(bg="white", fg="black", font=("Arial", 10), bd=2, relief="solid")
-seconds_box.config(bg="white", fg="black", font=("Arial", 10), bd=2, relief="solid")
+result_box.config(font=("Arial", 11), fg="black", bg="white", width=50, height=3, bd=2, relief="sunken")
 
 #Styling the search button
 search_button.config(bg="#4CAF50", fg="white", font=("Arial", 10, "bold"), bd=3, relief="raised")
