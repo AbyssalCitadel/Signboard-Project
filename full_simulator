@@ -1,4 +1,4 @@
-from arrival_sorter import queue_of_students
+from student_generator import queue_of_students
 from circle_linked_list  import CircularLinkedList
 import time 
 
