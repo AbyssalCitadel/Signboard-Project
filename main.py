@@ -23,7 +23,7 @@ def search():
         slide_count = 0
         for x in times_slides_were_seen:
             slide_count = slide_count + x
-            slide_count = slide_count // len(times_slides_were_seen)
+         slide_count = slide_count // len(times_slides_were_seen)
         # I tried to split the output text, but it hates me D:
         result_box.config(text=(f"The most times a slide was seen was {min(times_slides_were_seen)}, at slide {times_slides_were_seen.index(min(times_slides_were_seen))} \n The least times a slide was seen was {max(times_slides_were_seen)}, at slide {times_slides_were_seen.index(max(times_slides_were_seen))} \n On average, a given slide was seen {slide_count} times"))
 
